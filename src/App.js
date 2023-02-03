@@ -1,5 +1,5 @@
 import CreateAccount from "./components/CreateAccount";
-import React, { useState } from "react";
+import React from "react";
 import { Fieldset } from "primereact/fieldset";
 
 const legendTemplate = (

@@ -12,7 +12,17 @@ function CreateAccount() {
   const [city, setCity] = useState(null);
   const [age, setAge] = useState(null);
   const [name, setName] = useState("");
+  const [disable, setDisable] = useState(true);
   const toast = useRef(null);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    toast.current.show({
+      severity: "success",
+      summary: "Enviado",
+      detail: "Usuario regristrado",
+    });
+  }
 
   useEffect(() => {
     if ((age < 18 || age > 99) && age != null) {
@@ -41,8 +51,12 @@ function CreateAccount() {
     }
   }, [age, name]);
 
+  useEffect(() => {
+    if (city) setDisable(false);
+  }, [city]);
+
   return (
-    <form className="flex flex-column gap-5">
+    <form className="flex flex-column gap-5 m-2" onSubmit={handleSubmit}>
       <Toast ref={toast} />
       <div className="p-inputgroup">
         <span className="p-inputgroup-addon">
@@ -114,7 +128,13 @@ function CreateAccount() {
           <label htmlFor="cities">Selecciona una ciudad</label>
         </span>
       </div>
-      <Button label="Submit" icon="pi pi-check" className="flex m-auto p-button-rounded" />
+      <Button
+        type="submit"
+        label="Submit"
+        icon="pi pi-check"
+        className="flex m-auto p-button-rounded"
+        disabled={disable}
+      />
     </form>
   );
 }
