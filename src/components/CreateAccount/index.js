@@ -42,7 +42,7 @@ function CreateAccount() {
   }, [age, name]);
 
   return (
-    <form className="flex flex-column gap-5 w-8 p-4">
+    <form className="flex flex-column gap-5">
       <Toast ref={toast} />
       <div className="p-inputgroup">
         <span className="p-inputgroup-addon">
