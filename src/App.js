@@ -1,17 +1,11 @@
-import FormContainer from "./components/FormContainer";
-
-const legendTemplate = (
-  <div>
-    <span className="pi pi-user mr-2"></span>
-    <span className="font-bold text-lg">Crea tu cuenta</span>
-  </div>
-);
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import UnauthenticatedApp from "./pages/UnauthenticatedApp";
 
 function App() {
   return (
-    <div>
-      <FormContainer/>
-    </div>
+    <BrowserRouter>
+      <UnauthenticatedApp />
+    </BrowserRouter>
   );
 }
 
