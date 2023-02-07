@@ -158,14 +158,16 @@ function CreateAccount() {
             </div>
             <small>Mínimo 6 cáracteres</small>
           </div>
-
+          <div>
           <Button
             type="submit"
-            label="Submit"
+            label="Enviar"
             icon="pi pi-check"
             className="flex m-auto p-button-rounded"
             disabled={disabled}
           />
+          <p className="anchor">Ya tengo cuenta</p>
+          </div>
         </form>
       )}
     </Formik>
