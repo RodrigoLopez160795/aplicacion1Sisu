@@ -1,7 +1,5 @@
-import CreateAccount from "./components/CreateAccount";
-import React from "react";
 import { Fieldset } from "primereact/fieldset";
-import CreateAccount2 from "./components/CreateAccount2";
+import CreateAccount from "./components/CreateAccount";
 
 const legendTemplate = (
   <div>
@@ -14,7 +12,7 @@ function App() {
   return (
     <div className="m-auto w-8 mt-6">
       <Fieldset legend={legendTemplate}>
-        <CreateAccount2 />
+        <CreateAccount />
       </Fieldset>
     </div>
   );
