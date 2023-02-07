@@ -1,5 +1,4 @@
-import { Fieldset } from "primereact/fieldset";
-import CreateAccount from "./components/CreateAccount";
+import FormContainer from "./components/FormContainer";
 
 const legendTemplate = (
   <div>
@@ -10,10 +9,8 @@ const legendTemplate = (
 
 function App() {
   return (
-    <div className="m-auto w-8 mt-6">
-      <Fieldset legend={legendTemplate}>
-        <CreateAccount />
-      </Fieldset>
+    <div>
+      <FormContainer/>
     </div>
   );
 }

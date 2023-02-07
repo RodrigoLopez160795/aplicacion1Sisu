@@ -42,7 +42,7 @@ function CreateAccount() {
       }}
     >
       {({ values, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
-        <form className="flex flex-column gap-4 m-1" onSubmit={handleSubmit}>
+        <form className="flex flex-column gap-4" onSubmit={handleSubmit}>
           <div>
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">
