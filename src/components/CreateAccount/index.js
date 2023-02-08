@@ -10,7 +10,7 @@ import { UserContext } from "../../App";
 //Investigar como hacerlo con Toast
 function CreateAccount() {
   const [disabled, setDisabled] = useState(true);
-  const {setUser} = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
   return (
     <Formik
@@ -66,7 +66,10 @@ function CreateAccount() {
                 <label htmlFor="name">Nombre completo</label>
               </span>
             </div>
-            <small>Máximo 50 cáracteres y solo puede contener letras (puede llevar acentos)</small>
+            <small>
+              Máximo 50 cáracteres y solo puede contener letras (puede llevar
+              acentos)
+            </small>
           </div>
           <div>
             <div className="p-inputgroup">
@@ -164,15 +167,20 @@ function CreateAccount() {
             </div>
             <small>Mínimo 6 cáracteres</small>
           </div>
-          <div>
-          <Button
-            type="submit"
-            label="Enviar"
-            icon="pi pi-check"
-            className="flex m-auto p-button-rounded"
-            disabled={disabled}
-          />
-          <Link to="/login" className="anchor">Ya tengo cuenta</Link>
+          <div className="flex justify-content-around">
+            <Link to="/login">
+              <Button
+                label="Ya tengo cuenta"
+                className="p-button-link p-button-sm"
+              />
+            </Link>
+            <Button
+              type="submit"
+              label="Enviar"
+              icon="pi pi-check"
+              className="p-button-rounded"
+              disabled={disabled}
+            />
           </div>
         </form>
       )}

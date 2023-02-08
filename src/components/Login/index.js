@@ -8,7 +8,7 @@ import { UserContext } from "../../App";
 
 function Login() {
   const [disabled, setDisabled] = useState(true);
-  const {setUser} = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
   return (
     <Formik
@@ -79,17 +79,20 @@ function Login() {
             </div>
             <small>Mínimo 6 cáracteres</small>
           </div>
-          <div>
+          <div className="flex justify-content-around">
+            <Link to="/create-account">
+              <Button
+                label="No tengo cuenta"
+                className="p-button-link p-button-sm"
+              />
+            </Link>
             <Button
               type="submit"
               label="Enviar"
               icon="pi pi-check"
-              className="flex m-auto p-button-rounded"
+              className="p-button-rounded"
               disabled={disabled}
             />
-            <Link to="/create-account" className="anchor">
-              No tengo cuenta
-            </Link>
           </div>
         </form>
       )}

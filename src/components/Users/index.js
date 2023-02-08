@@ -39,15 +39,15 @@ function Users() {
         <Column field="city" header="Ciudad"></Column>
       </DataTable>
       <div className="mt-2 flex justify-content-center">
-      <Button
-        onClick={() => {
-          setUser(false);
-          navigate("/login");
-        }}
-        label="Cerrar sesión"
-        icon="pi pi-power-off"
-        className="p-button-danger"
-      />
+        <Button
+          onClick={() => {
+            setUser(false);
+            navigate("/login");
+          }}
+          label="Cerrar sesión"
+          icon="pi pi-power-off"
+          className="p-button-danger"
+        />
       </div>
     </div>
   );

@@ -5,11 +5,11 @@ import UnauthenticatedApp from "./pages/UnauthenticatedApp";
 
 export const UserContext = createContext();
 function App() {
-  const [user,setUser] = useState(false);
+  const [user, setUser] = useState(false);
   return (
     <BrowserRouter>
-      <UserContext.Provider value={{user,setUser}}>
-      {!user ? <UnauthenticatedApp /> : <AuthenticatedApp/>}
+      <UserContext.Provider value={{ user, setUser }}>
+        {!user ? <UnauthenticatedApp /> : <AuthenticatedApp />}
       </UserContext.Provider>
     </BrowserRouter>
   );

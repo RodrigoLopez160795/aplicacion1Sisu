@@ -6,7 +6,7 @@ import FormContainer from "../components/FormContainer";
 function UnauthenticatedApp() {
   const navigate = useNavigate();
   let location = useLocation();
-  const {user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
   useEffect(() => {
     if (location.pathname === "/" || !user) navigate("/login");
   }, []);
@@ -15,7 +15,7 @@ function UnauthenticatedApp() {
       <Route index element={<FormContainer form="login" />} />
       <Route path="/login" element={<FormContainer form="login" />} />
       <Route path="/create-account" element={<FormContainer form="create" />} />
-      <Route path="*" element={<h1>Not found</h1>}/>
+      <Route path="*" element={<h1>Not found</h1>} />
     </Routes>
   );
 }
