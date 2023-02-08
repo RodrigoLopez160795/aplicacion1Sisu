@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import UnauthenticatedApp from "./pages/UnauthenticatedApp";
 
 function App() {

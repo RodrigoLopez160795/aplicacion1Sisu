@@ -6,11 +6,11 @@ function UnauthenticatedApp() {
   const navigate = useNavigate();
   let location = useLocation();
   useEffect(() => {
-    if(location.pathname === "/")
-    navigate("/login");
+    if (location.pathname === "/") navigate("/login");
   }, []);
   return (
     <Routes>
+      <Route index element={<FormContainer form="login" />} />
       <Route path="/login" element={<FormContainer form="login" />} />
       <Route path="/create-account" element={<FormContainer form="create" />} />
     </Routes>

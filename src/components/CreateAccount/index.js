@@ -5,6 +5,7 @@ import { Password } from "primereact/password";
 import { Button } from "primereact/button";
 import { cities, countries, states } from "./utils";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 //Investigar como hacerlo con Toast
 function CreateAccount() {
   const [disabled, setDisabled] = useState(true);
@@ -60,7 +61,7 @@ function CreateAccount() {
                 <label htmlFor="name">Nombre completo</label>
               </span>
             </div>
-            <small>Máximo 50 cáracteres</small>
+            <small>Máximo 50 cáracteres y solo puede contener letras (puede llevar acentos)</small>
           </div>
           <div>
             <div className="p-inputgroup">
@@ -166,7 +167,7 @@ function CreateAccount() {
             className="flex m-auto p-button-rounded"
             disabled={disabled}
           />
-          <p className="anchor">Ya tengo cuenta</p>
+          <Link to="/login" className="anchor">Ya tengo cuenta</Link>
           </div>
         </form>
       )}
