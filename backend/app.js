@@ -1,9 +1,13 @@
 const express = require("express");
+const { v4: uuidv4 } = require("uuid");
 const { countries, states, cities } = require("./data");
 const app = express();
 const port = 8080;
 
-const user = [];
+let users = [];
+
+//Para obtener el body del json
+app.use(express.json());
 
 //Devuelve la lista de países
 app.get("/paises", (req, res) => {
@@ -26,6 +30,31 @@ app.get("/ciudades/:stateId", (req, res) => {
   if (citiesArray.length === 0)
     res.status(404).json({ message: "No se encontro" });
   else res.status(200).json(citiesArray);
+});
+
+// Devuelve los usuarios existentes
+app.get("/usuarios", (req, res) => {
+  res.status(200).json(users);
+});
+
+// Postea un nuevo usuario
+app.post("/usuarios", (req, res) => {
+  const { name, age, country, state, city, password } = req.body;
+  const user = {
+    id: uuidv4(),
+    name: name,
+    age: age,
+    country: country,
+    state: state,
+    city: city,
+    password: password,
+  };
+  if (Object.values(user).some((e) => e === undefined))
+    res.status(403).json({ message: "Faltan datos" });
+  else {
+    res.status(201).json({ message: "Usuario agregado correctamente" });
+    users.push(user);
+  }
 });
 
 app.listen(port, () => {
