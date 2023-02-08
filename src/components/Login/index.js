@@ -28,6 +28,7 @@ function Login() {
         if (!values.password) errors.password = "1";
         else if (values.password.length < 6) errors.password = "1";
         if (Object.keys(errors).length === 0) setDisabled(false);
+        else setDisabled(true);
         return errors;
       }}
       onSubmit={(values) => {
