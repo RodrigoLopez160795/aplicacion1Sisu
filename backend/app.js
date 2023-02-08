@@ -1,7 +1,9 @@
 const express = require("express");
-const { countries, states } = require("./data");
+const { countries, states, cities } = require("./data");
 const app = express();
 const port = 8080;
+
+const user = [];
 
 //Devuelve la lista de países
 app.get("/paises", (req, res) => {
@@ -15,6 +17,15 @@ app.get("/estados/:countryId", (req, res) => {
   if (statesArray.length === 0)
     res.status(404).json({ message: "No se encontro" });
   else res.status(200).json(statesArray);
+});
+
+//Devuelve las ciudades por estado
+app.get("/ciudades/:stateId", (req, res) => {
+  const { stateId } = req.params;
+  const citiesArray = cities.filter((city) => city.stateId == stateId);
+  if (citiesArray.length === 0)
+    res.status(404).json({ message: "No se encontro" });
+  else res.status(200).json(citiesArray);
 });
 
 app.listen(port, () => {
