@@ -2,11 +2,14 @@ import { Formik } from "formik";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../../App";
 
 function Login() {
   const [disabled, setDisabled] = useState(true);
+  const {setUser} = useContext(UserContext);
+  const navigate = useNavigate();
   return (
     <Formik
       initialValues={{
@@ -29,6 +32,8 @@ function Login() {
       }}
       onSubmit={(values) => {
         console.log(values);
+        setUser(true);
+        navigate("/users");
       }}
     >
       {({ values, handleChange, handleBlur, handleSubmit }) => (

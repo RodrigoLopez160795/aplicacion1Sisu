@@ -4,11 +4,14 @@ import { Dropdown } from "primereact/dropdown";
 import { Password } from "primereact/password";
 import { Button } from "primereact/button";
 import { cities, countries, states } from "./utils";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../../App";
 //Investigar como hacerlo con Toast
 function CreateAccount() {
   const [disabled, setDisabled] = useState(true);
+  const {setUser} = useContext(UserContext);
+  const navigate = useNavigate();
   return (
     <Formik
       initialValues={{
@@ -40,6 +43,8 @@ function CreateAccount() {
       }}
       onSubmit={(values) => {
         console.log(values);
+        setUser(true);
+        navigate("/users");
       }}
     >
       {({ values, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
