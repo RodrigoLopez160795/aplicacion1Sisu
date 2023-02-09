@@ -65,9 +65,10 @@ app.post("/login", (req, res) => {
   const { name, password } = req.body;
   if (name === undefined || password === undefined)
     res.status(403).json({ message: "Faltan datos" });
-  if (users.some((user) => user.name === name && user.password === password))
+  else if (users.some((user) => user.name === name && user.password === password))
     res.status(200).json({ message: "Bienvenido" });
-  else res.status(401).json({ message: "Credenciales inválidas" });
+  else
+  res.status(401).json({ message: "Credenciales inválidas" });
 });
 
 app.listen(port, () => {
