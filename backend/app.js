@@ -1,11 +1,20 @@
 const express = require("express");
-const cors = require('cors');
+const cors = require("cors");
 const { v4: uuidv4 } = require("uuid");
-const { countries, states, cities } = require("./data");
+// const { countries, states, cities } = require("./data");
+const db = require("./firebase");
+const { collection, getDocs } = require("firebase/firestore");
 const app = express();
 const port = 8080;
 
-let users = [];
+async function getData() {
+  const dataCollection = collection(db, "data");
+  const dataSnapshot = await getDocs(dataCollection);
+  const data = dataSnapshot.docs.map((doc) => doc.data());
+  return data;
+}
+// let countries, states, cities;
+// getData().then({});
 
 //Para obtener el body del json
 app.use(express.json());
@@ -16,7 +25,6 @@ app.use(cors());
 app.get("/paises", (req, res) => {
   res.status(200).json(countries);
 });
-
 // Devuelve los estados por país
 app.get("/estados/:countryId", (req, res) => {
   const { countryId } = req.params;
