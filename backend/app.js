@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require('cors');
 const { v4: uuidv4 } = require("uuid");
 const { countries, states, cities } = require("./data");
 const app = express();
@@ -8,6 +9,8 @@ let users = [];
 
 //Para obtener el body del json
 app.use(express.json());
+
+app.use(cors());
 
 //Devuelve la lista de países
 app.get("/paises", (req, res) => {
