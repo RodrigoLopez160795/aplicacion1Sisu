@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
 import { loadCities, loadCountries, loadStates } from "../../services/data";
+import { createUser } from "../../services/user";
 //Investigar como hacerlo con Toast
 function CreateAccount() {
   const [disabled, setDisabled] = useState(true);
@@ -53,9 +54,10 @@ function CreateAccount() {
         return errors;
       }}
       onSubmit={(values) => {
-        console.log(values);
-        // setUser(true);
-        // navigate("/users");
+        createUser(values).then(()=>{
+          setUser(true);
+          navigate("/users");
+        })
       }}
     >
       {({ values, handleChange, handleBlur, handleSubmit, setFieldValue }) => (

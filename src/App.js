@@ -5,7 +5,7 @@ import UnauthenticatedApp from "./pages/UnauthenticatedApp";
 
 export const UserContext = createContext();
 function App() {
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(true);
   return (
     <BrowserRouter>
       <UserContext.Provider value={{ user, setUser }}>
