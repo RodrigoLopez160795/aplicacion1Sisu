@@ -3,15 +3,25 @@ import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { Password } from "primereact/password";
 import { Button } from "primereact/button";
-import { cities, countries, states } from "./utils";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
+import { loadCities, loadCountries, loadStates } from "../../services/data";
 //Investigar como hacerlo con Toast
 function CreateAccount() {
   const [disabled, setDisabled] = useState(true);
   const { setUser } = useContext(UserContext);
+  const [countries, setCountries] = useState(null);
+  const [states, setStates] = useState(null);
+  const [cities, setCities] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    loadCountries()
+      .then((data) => setCountries(data))
+      .catch(console.log);
+  }, []);
+
   return (
     <Formik
       initialValues={{
@@ -44,8 +54,8 @@ function CreateAccount() {
       }}
       onSubmit={(values) => {
         console.log(values);
-        setUser(true);
-        navigate("/users");
+        // setUser(true);
+        // navigate("/users");
       }}
     >
       {({ values, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
@@ -92,23 +102,32 @@ function CreateAccount() {
             </div>
             <small>Entre 18 y 99 años (inclusivo)</small>
           </div>
-          <div className="p-inputgroup">
-            <span className="p-inputgroup-addon">
-              <i className="pi pi-map"></i>
-            </span>
-            <span className="p-float-label">
-              <Dropdown
-                options={countries}
-                name="countries"
-                inputId="countries"
-                className="p-inputtext-sm"
-                onChange={(e) => setFieldValue("country", e.value)}
-                onBlur={handleBlur}
-                value={values.country}
-              />
-              <label htmlFor="countries">Selecciona un país</label>
-            </span>
-          </div>
+          {countries && (
+            <div className="p-inputgroup">
+              <span className="p-inputgroup-addon">
+                <i className="pi pi-map"></i>
+              </span>
+              <span className="p-float-label">
+                <Dropdown
+                  options={countries}
+                  name="countries"
+                  inputId="countries"
+                  optionLabel="name"
+                  className="p-inputtext-sm"
+                  onChange={async (e) => {
+                    await setFieldValue("state", "");
+                    await setFieldValue("city", "");
+                    const response = await loadStates(e.value.id);
+                    await setFieldValue("country", e.value);
+                    await setStates(response);
+                  }}
+                  onBlur={handleBlur}
+                  value={values.country}
+                />
+                <label htmlFor="countries">Selecciona un país</label>
+              </span>
+            </div>
+          )}
           <div className="p-inputgroup">
             <span className="p-inputgroup-addon">
               <i className="pi pi-map"></i>
@@ -116,6 +135,7 @@ function CreateAccount() {
             <span className="p-float-label">
               <Dropdown
                 options={states}
+                optionLabel="name"
                 name="states"
                 inputId="states"
                 className={
@@ -123,7 +143,12 @@ function CreateAccount() {
                     ? "p-inputtext-sm"
                     : "p-inputtext-sm p-disabled"
                 }
-                onChange={(e) => setFieldValue("state", e.value)}
+                onChange={async (e) => {
+                  await setFieldValue("city", "");
+                  const response = await loadCities(e.value.id);
+                  await setFieldValue("state", e.value);
+                  await setCities(response);
+                }}
                 onBlur={handleBlur}
                 value={values.state}
               />
@@ -139,6 +164,7 @@ function CreateAccount() {
                 options={cities}
                 name="cities"
                 inputId="cities"
+                optionLabel="name"
                 className={
                   values.state ? "p-inputtext-sm" : "p-inputtext-sm p-disabled"
                 }
