@@ -2,14 +2,17 @@ import { Formik } from "formik";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
-import { useContext, useState } from "react";
+import { Toast } from "primereact/toast";
+import { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
+import { login } from "../../services/user";
 
 function Login() {
   const [disabled, setDisabled] = useState(true);
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const toast = useRef(null);
   return (
     <Formik
       initialValues={{
@@ -31,14 +34,25 @@ function Login() {
         else setDisabled(true);
         return errors;
       }}
-      onSubmit={(values) => {
-        console.log(values);
-        setUser(true);
-        navigate("/users");
+      onSubmit={(values,actions) => {
+        login(values).then(({ message }) => {
+          if (message === "Credenciales inválidas") {
+            toast.current.show({
+              severity: "error",
+              summary: "Error",
+              detail: `${message}`,
+            });
+            actions.resetForm();
+          } else {
+            setUser(true);
+            navigate("/users");
+          }
+        });
       }}
     >
       {({ values, handleChange, handleBlur, handleSubmit }) => (
         <form className="flex flex-column gap-4" onSubmit={handleSubmit}>
+          <Toast ref={toast} />
           <div>
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">
@@ -57,8 +71,7 @@ function Login() {
               </span>
             </div>
             <small>
-              Máximo 50 cáracteres y solo puede contener letras (puede llevar
-              acentos)
+              Escribe tu nombre como lo registraste
             </small>
           </div>
           <div>

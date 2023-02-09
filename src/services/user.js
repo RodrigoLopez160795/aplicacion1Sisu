@@ -13,3 +13,13 @@ export async function indexUsers(){
     const response = await fetch(`${BASE_URI}/usuarios`);
     return await response.json();
 }
+
+export async function login(credentials){
+    const response = await fetch(`${BASE_URI}/login`,{
+        method:"POST",
+        headers:{'Content-Type': 'application/json'},
+        body: JSON.stringify(credentials)
+    })
+    return await response.json();
+}
+
