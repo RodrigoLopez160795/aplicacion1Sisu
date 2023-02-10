@@ -3,7 +3,7 @@ const cors = require("cors");
 const { v4: uuidv4 } = require("uuid");
 const morgan = require("morgan");
 const { getData, postUser } = require("./services");
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 
 const app = express();
 const port = 8080;
@@ -49,7 +49,9 @@ app.get("/ciudades/:stateId", (req, res) => {
 
 // Devuelve los usuarios existentes
 app.get("/usuarios", (req, res) => {
-  res.status(200).json(users);
+  getData("users", true).then((data) => {
+    res.status(200).json(data.map((doc) => doc.data()));
+  });
 });
 
 // Postea un nuevo usuario
@@ -62,24 +64,35 @@ app.post("/usuarios", (req, res) => {
     country: country,
     state: state,
     city: city,
-    password: bcrypt.hashSync(password,10),
+    password: bcrypt.hashSync(password, 10),
   };
   if (Object.values(user).some((e) => e === undefined))
     res.status(403).json({ message: "Faltan datos" });
   else {
-    postUser(user)
-      .then(res.status(201).json({ message: "Usuario agregado correctamente" }))
+    postUser(user).then(
+      res
+        .status(201)
+        .json({ message: "Usuario agregado correctamente", body: user })
+    );
   }
 });
 
 // Iniciar sesión
 app.post("/login", (req, res) => {
   const { name, password } = req.body;
-  if (name === undefined || password === undefined)
-    res.status(403).json({ message: "Faltan datos" });
-  else if (users.some((user) => user.name === name && user.password === password))
-    res.status(200).json({ message: "Bienvenido" });
-  else res.status(401).json({ message: "Credenciales inválidas" });
+  getData("users", true).then((data) => {
+    if (name === undefined || password === undefined)
+      res.status(403).json({ message: "Faltan datos" });
+    else if (
+      data.some(
+        (user) =>
+          user.data().name === name &&
+          bcrypt.compareSync(password, user.data().password)
+      )
+    )
+      res.status(200).json({ message: "Bienvenido" });
+    else res.status(401).json({ message: "Credenciales inválidas" });
+  });
 });
 
 app.listen(port, () => {
