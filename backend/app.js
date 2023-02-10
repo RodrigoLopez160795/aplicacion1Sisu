@@ -67,9 +67,8 @@ app.post("/usuarios", (req, res) => {
   if (Object.values(user).some((e) => e === undefined))
     res.status(403).json({ message: "Faltan datos" });
   else {
-    postUser(user).then(
-      res.status(201).json({ message: "Usuario agregado correctamente" })
-    );
+    postUser(user)
+      .then(res.status(201).json({ message: "Usuario agregado correctamente" }))
   }
 });
 
