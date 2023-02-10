@@ -1,9 +1,17 @@
 const db = require("./firebase");
 
 async function getData() {
-  const querySnapshot = await db.collection("data").get()
+  const querySnapshot = await db.collection("data").get();
   return querySnapshot.docs[0].data();
 }
 
-module.exports = { getData };
+async function postUser(credentials) {
+  try {
+    await db.collection("users").add(credentials);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+module.exports = { getData, postUser };
 //.doc("77htc3WfARKw1jIA5X6N");
