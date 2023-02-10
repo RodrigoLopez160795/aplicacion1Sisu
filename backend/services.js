@@ -14,4 +14,3 @@ async function postUser(credentials) {
 }
 
 module.exports = { getData, postUser };
-//.doc("77htc3WfARKw1jIA5X6N");

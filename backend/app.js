@@ -3,7 +3,7 @@ const cors = require("cors");
 const { v4: uuidv4 } = require("uuid");
 const morgan = require("morgan");
 const { getData, postUser } = require("./services");
-const db = require("./firebase");
+const bcrypt = require('bcryptjs');
 
 const app = express();
 const port = 8080;
@@ -62,7 +62,7 @@ app.post("/usuarios", (req, res) => {
     country: country,
     state: state,
     city: city,
-    password: password,
+    password: bcrypt.hashSync(password,10),
   };
   if (Object.values(user).some((e) => e === undefined))
     res.status(403).json({ message: "Faltan datos" });
@@ -77,7 +77,7 @@ app.post("/login", (req, res) => {
   const { name, password } = req.body;
   if (name === undefined || password === undefined)
     res.status(403).json({ message: "Faltan datos" });
-  if (users.some((user) => user.name === name && user.password === password))
+  else if (users.some((user) => user.name === name && user.password === password))
     res.status(200).json({ message: "Bienvenido" });
   else res.status(401).json({ message: "Credenciales inválidas" });
 });
