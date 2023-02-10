@@ -1,46 +1,52 @@
 const express = require("express");
 const cors = require("cors");
 const { v4: uuidv4 } = require("uuid");
+const morgan = require('morgan');
+const { getData } = require("./services");
 const db = require("./firebase");
-const { collection, getDocs } = require("firebase/firestore");
+
 const app = express();
 const port = 8080;
-
-async function getData() {
-  const dataCollection = collection(db, "data");
-  const dataSnapshot = await getDocs(dataCollection);
-  const data = dataSnapshot.docs.map((doc) => doc.data());
-  return data;
-}
-
+let users = [];
 //Para obtener el body del json
 app.use(express.json());
 
 app.use(cors());
 
+//Para mostrar las peticiones en la consola
+app.use(morgan('dev'));
+
 //Devuelve la lista de países
 app.get("/paises", (req, res) => {
   getData().then((data) => {
-    res.status(200).json(data[0].countries);
-  })
-  
+    res.status(200).json(data.countries);
+  });
 });
+
 // Devuelve los estados por país
 app.get("/estados/:countryId", (req, res) => {
-  const { countryId } = req.params;
-  const statesArray = states.filter((state) => state.countryId == countryId);
-  if (statesArray.length === 0)
-    res.status(404).json({ message: "No se encontro" });
-  else res.status(200).json(statesArray);
+  getData().then((data) => {
+    const { countryId } = req.params;
+    const statesArray = data.states.filter(
+      (state) => state.countryId == countryId
+    );
+    if (statesArray.length === 0)
+      res.status(404).json({ message: "No se encontro" });
+    else res.status(200).json(statesArray);
+  });
 });
 
 //Devuelve las ciudades por estado
 app.get("/ciudades/:stateId", (req, res) => {
-  const { stateId } = req.params;
-  const citiesArray = cities.filter((city) => city.stateId == stateId);
-  if (citiesArray.length === 0)
-    res.status(404).json({ message: "No se encontro" });
-  else res.status(200).json(citiesArray);
+  getData().then((data) => {
+    const { stateId } = req.params;
+    const citiesArray = data.cities.filter(
+      (city) => city.stateId == stateId
+    );
+    if (citiesArray.length === 0)
+      res.status(404).json({ message: "No se encontro" });
+    else res.status(200).json(citiesArray);
+  });
 });
 
 // Devuelve los usuarios existentes
