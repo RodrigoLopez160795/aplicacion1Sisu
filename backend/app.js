@@ -59,11 +59,11 @@ app.post("/usuarios", (req, res) => {
   const { name, age, country, state, city, password } = req.body;
   const user = {
     id: uuidv4(),
-    name: name,
-    age: age,
-    country: country,
-    state: state,
-    city: city,
+    name,
+    age,
+    country,
+    state,
+    city,
     password: bcrypt.hashSync(password, 10),
   };
   if (Object.values(user).some((e) => e === undefined))
