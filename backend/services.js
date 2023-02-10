@@ -1,8 +1,9 @@
 const db = require("./firebase");
 
-async function getData() {
-  const querySnapshot = await db.collection("data").get();
-  return querySnapshot.docs[0].data();
+async function getData(collection, allCollections = false) {
+  const querySnapshot = await db.collection(collection).get();
+  if (allCollections) return querySnapshot.docs;
+  else return querySnapshot.docs[0].data();
 }
 
 async function postUser(credentials) {

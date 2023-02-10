@@ -18,14 +18,14 @@ app.use(morgan("dev"));
 
 //Devuelve la lista de países
 app.get("/paises", (req, res) => {
-  getData().then((data) => {
+  getData("data").then((data) => {
     res.status(200).json(data.countries);
   });
 });
 
 // Devuelve los estados por país
 app.get("/estados/:countryId", (req, res) => {
-  getData().then((data) => {
+  getData("data").then((data) => {
     const { countryId } = req.params;
     const statesArray = data.states.filter(
       (state) => state.countryId == countryId
@@ -38,7 +38,7 @@ app.get("/estados/:countryId", (req, res) => {
 
 //Devuelve las ciudades por estado
 app.get("/ciudades/:stateId", (req, res) => {
-  getData().then((data) => {
+  getData("data").then((data) => {
     const { stateId } = req.params;
     const citiesArray = data.cities.filter((city) => city.stateId == stateId);
     if (citiesArray.length === 0)
