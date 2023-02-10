@@ -81,17 +81,17 @@ app.post("/usuarios", (req, res) => {
 app.post("/login", (req, res) => {
   const { name, password } = req.body;
   getData("users", true).then((data) => {
-    if (name === undefined || password === undefined)
-      res.status(403).json({ message: "Faltan datos" });
-    else if (
-      data.some(
-        (user) =>
-          user.data().name === name &&
-          bcrypt.compareSync(password, user.data().password)
-      )
-    )
-      res.status(200).json({ message: "Bienvenido" });
-    else res.status(401).json({ message: "Credenciales inválidas" });
+    if (!name || !password) res.status(403).json({ message: "Faltan datos" });
+    else {
+      let user = data.find(
+        (doc) =>
+          doc.data().name === name &&
+          bcrypt.compareSync(password, doc.data().password)
+      );
+      if (user)
+        res.status(200).json({ message: "Bienvenido", user: user.data() });
+      else res.status(401).json({ message: "Credenciales inválidas" });
+    }
   });
 });
 
