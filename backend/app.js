@@ -1,10 +1,11 @@
 const express = require("express");
 const cors = require("cors");
-const { v4: uuidv4 } = require("uuid");
+const { v4: uuidv4, validate } = require("uuid");
 const morgan = require("morgan");
 const { getData, postUser } = require("./services");
 const bcrypt = require("bcryptjs");
 const userSerializer = require("./serializer");
+const { verifyToken } = require("./token");
 
 const app = express();
 const port = 8080;
@@ -50,9 +51,14 @@ app.get("/ciudades/:stateId", (req, res) => {
 
 // Devuelve los usuarios existentes
 app.get("/usuarios", (req, res) => {
-  getData("users", true).then((data) => {
-    res.status(200).json(data.map((doc) => userSerializer(doc.data(), false)));
-  });
+  const [header, token] = req.headers.authorization.split(" ");
+  if (header === "Bearer" && verifyToken(token)) {
+    getData("users", true).then((data) => {
+      res
+        .status(200)
+        .json(data.map((doc) => userSerializer(doc.data(), false)));
+    });
+  } else res.status(401).json({ message: "No estas autorizado" });
 });
 
 // Postea un nuevo usuario
