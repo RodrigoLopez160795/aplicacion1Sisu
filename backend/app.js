@@ -4,10 +4,11 @@ const { v4: uuidv4 } = require("uuid");
 const morgan = require("morgan");
 const { getData, postUser } = require("./services");
 const bcrypt = require("bcryptjs");
+const userSerializer = require("./serializer");
 
 const app = express();
 const port = 8080;
-let users = [];
+
 //Para obtener el body del json
 app.use(express.json());
 
@@ -50,7 +51,7 @@ app.get("/ciudades/:stateId", (req, res) => {
 // Devuelve los usuarios existentes
 app.get("/usuarios", (req, res) => {
   getData("users", true).then((data) => {
-    res.status(200).json(data.map((doc) => doc.data()));
+    res.status(200).json(data.map((doc) => userSerializer(doc.data(), false)));
   });
 });
 
@@ -70,9 +71,10 @@ app.post("/usuarios", (req, res) => {
     res.status(403).json({ message: "Faltan datos" });
   else {
     postUser(user).then(
-      res
-        .status(201)
-        .json({ message: "Usuario agregado correctamente", body: user })
+      res.status(201).json({
+        message: "Usuario agregado correctamente",
+        user: userSerializer(user),
+      })
     );
   }
 });
@@ -88,9 +90,11 @@ app.post("/login", (req, res) => {
           doc.data().name === name &&
           bcrypt.compareSync(password, doc.data().password)
       );
-      if (user)
-        res.status(200).json({ message: "Bienvenido", user: user.data() });
-      else res.status(401).json({ message: "Credenciales inválidas" });
+      if (user) {
+        res
+          .status(200)
+          .json({ message: "Bienvenido", user: userSerializer(user.data()) });
+      } else res.status(401).json({ message: "Credenciales inválidas" });
     }
   });
 });
