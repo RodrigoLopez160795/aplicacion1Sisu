@@ -48,6 +48,7 @@ function Login() {
           } else {
             localStorage.setItem(USER_TOKEN,user.token)
             setToken(user.token);
+            navigate("/users");
           }
         });
       }}

@@ -5,23 +5,26 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { indexUsers } from "../../services/user";
+import { USER_TOKEN } from "../../config";
 
 function Users() {
-  const { setUser } = useContext(UserContext);
+  const { token, setToken } = useContext(UserContext);
   const navigate = useNavigate();
   const [users, setUsers] = useState();
 
   useEffect(() => {
-    indexUsers().then((data) => {
-      setUsers(
-        data.map((user) => ({
-          ...user,
-          state: user.state.name,
-          city: user.city.name,
-          country: user.country.name,
-        }))
-      );
-    });
+    if (token) {
+      indexUsers(token).then((data) => {
+        setUsers(
+          data.map((user) => ({
+            ...user,
+            state: user.state.name,
+            city: user.city.name,
+            country: user.country.name,
+          }))
+        );
+      });
+    }
   }, []);
 
   return (
@@ -43,7 +46,8 @@ function Users() {
       <div className="mt-2 flex justify-content-center">
         <Button
           onClick={() => {
-            setUser(false);
+            setToken(null);
+            localStorage.removeItem(USER_TOKEN);
             navigate("/login");
           }}
           label="Cerrar sesión"
