@@ -3,18 +3,21 @@ import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { Password } from "primereact/password";
 import { Button } from "primereact/button";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
 import { loadCities, loadCountries, loadStates } from "../../services/data";
 import { createUser } from "../../services/user";
-//Investigar como hacerlo con Toast
+import { USER_TOKEN } from "../../config";
+import { Toast } from "primereact/toast";
+
 function CreateAccount() {
   const [disabled, setDisabled] = useState(true);
-  const { setUser } = useContext(UserContext);
+  const { setToken } = useContext(UserContext);
   const [countries, setCountries] = useState(null);
   const [states, setStates] = useState(null);
   const [cities, setCities] = useState(null);
+  const toast = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,15 +56,26 @@ function CreateAccount() {
         else setDisabled(true);
         return errors;
       }}
-      onSubmit={(values) => {
-        createUser(values).then(()=>{
-          setUser(true);
-          navigate("/users");
+      onSubmit={(values,actions) => {
+        createUser(values).then(({user,message})=>{
+          if (!user) {
+            toast.current.show({
+              severity: "error",
+              summary: "Error",
+              detail: `${message}`,
+            });
+            actions.resetForm();
+            setDisabled(true)
+          } else {
+            localStorage.setItem(USER_TOKEN,user.token)
+            setToken(user.token);
+          }
         })
       }}
     >
       {({ values, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
         <form className="flex flex-column gap-4" onSubmit={handleSubmit}>
+            <Toast ref={toast} />
           <div>
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">

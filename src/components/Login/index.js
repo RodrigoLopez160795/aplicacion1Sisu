@@ -6,11 +6,12 @@ import { Toast } from "primereact/toast";
 import { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
+import { USER_TOKEN } from "../../config";
 import { login } from "../../services/user";
 
 function Login() {
   const [disabled, setDisabled] = useState(true);
-  const { setUser } = useContext(UserContext);
+  const { setToken } = useContext(UserContext);
   const navigate = useNavigate();
   const toast = useRef(null);
   return (
@@ -35,17 +36,18 @@ function Login() {
         return errors;
       }}
       onSubmit={(values,actions) => {
-        login(values).then(({ message }) => {
-          if (message === "Credenciales inválidas") {
+        login(values).then(({ user,message }) => {
+          if (!user) {
             toast.current.show({
               severity: "error",
               summary: "Error",
               detail: `${message}`,
             });
             actions.resetForm();
+            setDisabled(true)
           } else {
-            setUser(true);
-            navigate("/users");
+            localStorage.setItem(USER_TOKEN,user.token)
+            setToken(user.token);
           }
         });
       }}
