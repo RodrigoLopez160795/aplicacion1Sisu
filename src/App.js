@@ -6,7 +6,6 @@ import UnauthenticatedApp from "./pages/UnauthenticatedApp";
 
 export const UserContext = createContext();
 function App() {
-  const [user, setUser] = useState(false);
   const userToken = localStorage.getItem(USER_TOKEN);
   const [token, setToken] = useState(userToken);
 

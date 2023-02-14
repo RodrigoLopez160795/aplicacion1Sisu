@@ -1,8 +1,7 @@
 import { useContext, useEffect } from "react";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 import Users from "../components/Users";
-import { USER_TOKEN } from "../config";
 
 function AuthenticatedApp() {
   const { token } = useContext(UserContext);

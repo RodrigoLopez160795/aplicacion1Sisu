@@ -56,8 +56,8 @@ function CreateAccount() {
         else setDisabled(true);
         return errors;
       }}
-      onSubmit={(values,actions) => {
-        createUser(values).then(({user,message})=>{
+      onSubmit={(values, actions) => {
+        createUser(values).then(({ user, message }) => {
           if (!user) {
             toast.current.show({
               severity: "error",
@@ -65,18 +65,18 @@ function CreateAccount() {
               detail: `${message}`,
             });
             actions.resetForm();
-            setDisabled(true)
+            setDisabled(true);
           } else {
-            localStorage.setItem(USER_TOKEN,user.token)
+            localStorage.setItem(USER_TOKEN, user.token);
             setToken(user.token);
             navigate("/users");
           }
-        })
+        });
       }}
     >
       {({ values, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
         <form className="flex flex-column gap-4" onSubmit={handleSubmit}>
-            <Toast ref={toast} />
+          <Toast ref={toast} />
           <div>
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">

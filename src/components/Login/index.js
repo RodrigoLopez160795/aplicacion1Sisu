@@ -35,8 +35,8 @@ function Login() {
         else setDisabled(true);
         return errors;
       }}
-      onSubmit={(values,actions) => {
-        login(values).then(({ user,message }) => {
+      onSubmit={(values, actions) => {
+        login(values).then(({ user, message }) => {
           if (!user) {
             toast.current.show({
               severity: "error",
@@ -44,9 +44,9 @@ function Login() {
               detail: `${message}`,
             });
             actions.resetForm();
-            setDisabled(true)
+            setDisabled(true);
           } else {
-            localStorage.setItem(USER_TOKEN,user.token)
+            localStorage.setItem(USER_TOKEN, user.token);
             setToken(user.token);
             navigate("/users");
           }
@@ -73,9 +73,7 @@ function Login() {
                 <label htmlFor="name">Nombre completo</label>
               </span>
             </div>
-            <small>
-              Escribe tu nombre como lo registraste
-            </small>
+            <small>Escribe tu nombre como lo registraste</small>
           </div>
           <div>
             <div className="p-inputgroup">

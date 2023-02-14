@@ -8,7 +8,7 @@ function UnauthenticatedApp() {
   let location = useLocation();
   const { token } = useContext(UserContext);
   useEffect(() => {
-    if (!token) navigate("/login");
+    if (!token && location.pathname !== "/create-account") navigate("/login");
   }, []);
   return (
     <Routes>
