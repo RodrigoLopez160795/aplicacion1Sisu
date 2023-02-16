@@ -1,15 +1,13 @@
 import { Formik } from "formik";
-// import { InputText } from "primereact/inputtext";
-import { Dropdown } from "primereact/dropdown";
 import { Password } from "primereact/password";
 import { Button } from "primereact/button";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
-// import { loadCities, loadCountries, loadStates } from "../../services/data";
 import { createUser } from "../../services/user";
 import { USER_TOKEN } from "../../config";
 import InputText from "../InputText";
+import Dropdown from "../Dropdown";
 import { Toast } from "primereact/toast";
 import {
   createFirebaseUser,
@@ -106,78 +104,55 @@ function CreateAccount() {
             small="Entre 18 y 99 años (inclusivo)"
           />
           {countries && (
-            <div className="p-inputgroup">
-              <span className="p-inputgroup-addon">
-                <i className="pi pi-map"></i>
-              </span>
-              <span className="p-float-label">
-                <Dropdown
-                  options={countries}
-                  name="countries"
-                  inputId="countries"
-                  optionLabel="name"
-                  className="p-inputtext-sm"
-                  onChange={async (e) => {
-                    await setFieldValue("state", "");
-                    await setFieldValue("city", "");
-                    const response = await getStates(e.value.id);
-                    await setFieldValue("country", e.value);
-                    await setStates(response);
-                  }}
-                  onBlur={handleBlur}
-                  value={values.country}
-                />
-                <label htmlFor="countries">Selecciona un país</label>
-              </span>
-            </div>
+            <Dropdown
+              options={countries}
+              name="countries"
+              inputId="countries"
+              optionLabel="name"
+              className="p-inputtext-sm"
+              onChange={async (e) => {
+                await setFieldValue("state", "");
+                await setFieldValue("city", "");
+                const response = await getStates(e.value.id);
+                await setFieldValue("country", e.value);
+                await setStates(response);
+              }}
+              onBlur={handleBlur}
+              value={values.country}
+              label="Selecciona un país"
+            />
           )}
-          <div className="p-inputgroup">
-            <span className="p-inputgroup-addon">
-              <i className="pi pi-map"></i>
-            </span>
-            <span className="p-float-label">
-              <Dropdown
-                options={states}
-                optionLabel="name"
-                name="states"
-                inputId="states"
-                className={
-                  values.country
-                    ? "p-inputtext-sm"
-                    : "p-inputtext-sm p-disabled"
-                }
-                onChange={async (e) => {
-                  await setFieldValue("city", "");
-                  const response = await getCities(e.value.id);
-                  await setFieldValue("state", e.value);
-                  await setCities(response);
-                }}
-                onBlur={handleBlur}
-                value={values.state}
-              />
-              <label htmlFor="states">Selecciona un estado</label>
-            </span>
-          </div>
-          <div className="p-inputgroup">
-            <span className="p-inputgroup-addon">
-              <i className="pi pi-map"></i>
-            </span>
-            <span className="p-float-label">
-              <Dropdown
-                options={cities}
-                name="cities"
-                inputId="cities"
-                optionLabel="name"
-                className={
-                  values.state ? "p-inputtext-sm" : "p-inputtext-sm p-disabled"
-                }
-                onChange={(e) => setFieldValue("city", e.value)}
-                onBlur={handleBlur}
-                value={values.city}
-              />
-              <label htmlFor="cities">Selecciona una ciudad</label>
-            </span>
-          </div>
+          <Dropdown
+            options={states}
+            optionLabel="name"
+            name="states"
+            inputId="states"
+            className={
+              values.country ? "p-inputtext-sm" : "p-inputtext-sm p-disabled"
+            }
+            onChange={async (e) => {
+              await setFieldValue("city", "");
+              const response = await getCities(e.value.id);
+              await setFieldValue("state", e.value);
+              await setCities(response);
+            }}
+            onBlur={handleBlur}
+            value={values.state}
+            label="Selecciona un estado"
+          />
+          <Dropdown
+            options={cities}
+            name="cities"
+            inputId="cities"
+            optionLabel="name"
+            className={
+              values.state ? "p-inputtext-sm" : "p-inputtext-sm p-disabled"
+            }
+            onChange={(e) => setFieldValue("city", e.value)}
+            onBlur={handleBlur}
+            value={values.city}
+            label="Selecciona una ciudad"
+          />
           <div>
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">
