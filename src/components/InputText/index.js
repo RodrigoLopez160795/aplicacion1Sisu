@@ -17,7 +17,7 @@ function InputText({ keyfilter = "", ...props }) {
             onChange={props.onChange}
             onBlur={props.onBlur}
           />
-          <label htmlFor="name">{props.label}</label>
+          <label htmlFor={props.name}>{props.label}</label>
         </span>
       </div>
       <small>{props.small}</small>
