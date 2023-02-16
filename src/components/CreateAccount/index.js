@@ -1,16 +1,22 @@
 import { Formik } from "formik";
-import { InputText } from "primereact/inputtext";
+// import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { Password } from "primereact/password";
 import { Button } from "primereact/button";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
-import { loadCities, loadCountries, loadStates } from "../../services/data";
+// import { loadCities, loadCountries, loadStates } from "../../services/data";
 import { createUser } from "../../services/user";
 import { USER_TOKEN } from "../../config";
+import InputText from "../InputText";
 import { Toast } from "primereact/toast";
-import { getCities, getCountries, getStates } from "../../services/firebaseServices";
+import {
+  createFirebaseUser,
+  getCities,
+  getCountries,
+  getStates,
+} from "../../services/firebaseServices";
 
 function CreateAccount() {
   const [disabled, setDisabled] = useState(true);
@@ -22,7 +28,7 @@ function CreateAccount() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getCountries().then((data) => setCountries(data))
+    getCountries().then((data) => setCountries(data));
   }, []);
 
   return (
@@ -56,68 +62,49 @@ function CreateAccount() {
         return errors;
       }}
       onSubmit={(values, actions) => {
-        createUser(values).then(({ user, message }) => {
-          if (!user) {
-            toast.current.show({
-              severity: "error",
-              summary: "Error",
-              detail: `${message}`,
-            });
-            actions.resetForm();
-            setDisabled(true);
-          } else {
-            localStorage.setItem(USER_TOKEN, user.token);
-            setToken(user.token);
-            navigate("/users");
-          }
-        });
+        // createUser(values).then(({ user, message }) => {
+        //   if (!user) {
+        //     toast.current.show({
+        //       severity: "error",
+        //       summary: "Error",
+        //       detail: `${message}`,
+        //     });
+        //     actions.resetForm();
+        //     setDisabled(true);
+        //   } else {
+        //     localStorage.setItem(USER_TOKEN, user.token);
+        //     setToken(user.token);
+        //     navigate("/users");
+        //   }
+        // });
+        createFirebaseUser(values).then(console.log);
       }}
     >
       {({ values, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
         <form className="flex flex-column gap-4" onSubmit={handleSubmit}>
           <Toast ref={toast} />
-          <div>
-            <div className="p-inputgroup">
-              <span className="p-inputgroup-addon">
-                <i className="pi pi-user"></i>
-              </span>
-              <span className="p-float-label">
-                <InputText
-                  id="name"
-                  name="name"
-                  className="p-inputtext-sm"
-                  value={values.name}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                <label htmlFor="name">Nombre completo</label>
-              </span>
-            </div>
-            <small>
-              Máximo 50 cáracteres y solo puede contener letras (puede llevar
-              acentos)
-            </small>
-          </div>
-          <div>
-            <div className="p-inputgroup">
-              <span className="p-inputgroup-addon">
-                <i className="pi pi-calendar"></i>
-              </span>
-              <span className="p-float-label">
-                <InputText
-                  id="age"
-                  name="age"
-                  keyfilter="int"
-                  className="p-inputtext-sm"
-                  value={values.age}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                <label htmlFor="age">Edad</label>
-              </span>
-            </div>
-            <small>Entre 18 y 99 años (inclusivo)</small>
-          </div>
+          <InputText
+            id="name"
+            name="name"
+            icon="user"
+            value={values.name}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            label="Nombre completo"
+            small="Máximo 50 cáracteres y solo puede contener letras (puede llevar
+                    acentos)"
+          />
+          <InputText
+            id="age"
+            name="age"
+            icon="calendar"
+            keyfilter="int"
+            value={values.age}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            label="Edad"
+            small="Entre 18 y 99 años (inclusivo)"
+          />
           {countries && (
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">
