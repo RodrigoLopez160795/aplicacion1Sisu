@@ -10,6 +10,7 @@ import { loadCities, loadCountries, loadStates } from "../../services/data";
 import { createUser } from "../../services/user";
 import { USER_TOKEN } from "../../config";
 import { Toast } from "primereact/toast";
+import { getCities, getCountries, getStates } from "../../services/firebaseServices";
 
 function CreateAccount() {
   const [disabled, setDisabled] = useState(true);
@@ -21,9 +22,7 @@ function CreateAccount() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    loadCountries()
-      .then((data) => setCountries(data))
-      .catch(console.log);
+    getCountries().then((data) => setCountries(data))
   }, []);
 
   return (
@@ -134,7 +133,7 @@ function CreateAccount() {
                   onChange={async (e) => {
                     await setFieldValue("state", "");
                     await setFieldValue("city", "");
-                    const response = await loadStates(e.value.id);
+                    const response = await getStates(e.value.id);
                     await setFieldValue("country", e.value);
                     await setStates(response);
                   }}
@@ -162,7 +161,7 @@ function CreateAccount() {
                 }
                 onChange={async (e) => {
                   await setFieldValue("city", "");
-                  const response = await loadCities(e.value.id);
+                  const response = await getCities(e.value.id);
                   await setFieldValue("state", e.value);
                   await setCities(response);
                 }}

@@ -5,7 +5,6 @@ import AuthenticatedApp from "./pages/AuthenticatedApp";
 import UnauthenticatedApp from "./pages/UnauthenticatedApp";
 
 export const UserContext = createContext();
-console.log(process.env.REACT_APP_API_KEY)
 function App() {
   const userToken = localStorage.getItem(USER_TOKEN);
   const [token, setToken] = useState(userToken);
